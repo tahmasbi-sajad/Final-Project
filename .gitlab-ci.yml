@@ -30,7 +30,8 @@ test:
 
 deploy:
   stage: deploy
-  image: docker.arvancloud.ir/bitnami/kubectl:latest
+  image: docker.arvancloud.ir/bitnami/kubectl:1.32
+  entrypoint: [""]
   script:
     - echo "Deploying..."
     - kubectl --kubeconfig=$KUBE_CONFIG set image deployment/my-app my-app=$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
