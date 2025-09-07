@@ -10,13 +10,11 @@ build:
   stage: build
   image: docker
   script:
-    - echo "Login To Docker Hub..."
-    - echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-    - echo "Build Docker image..."
-    - docker build -t $IMAGE_NAME .
-    - echo "Send Docker image to Docker Hub..."
+    - echo "Build Docker image with 2 tags..."
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA -t $IMAGE_NAME:latest .
+    - echo "Push Docker image with commit tag..."
     - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-    - docker tag $IMAGE_NAME:$CI_COMMIT_SHORT_SHA $IMAGE_NAME:latest
+    - echo "Push Docker image with latest tag..."
     - docker push $IMAGE_NAME:latest
   only:
     - dev
