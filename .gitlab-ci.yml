@@ -24,10 +24,9 @@ build:
 
 test:
   stage: test
-  image: docker.arvancloud.ir/python:3.12-slim
-  script:
-    - echo "RUN ..."
-    - python -c "from app import main; main()"
+  trigger:
+    include: "test-ci.yml"
+    strategy: depend
 
 deploy:
   stage: deploy
