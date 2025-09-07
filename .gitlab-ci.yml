@@ -32,7 +32,7 @@ test:
 
 deploy:
   stage: deploy
-  image: bitnami/kubectl:1.33
+  image: bdocker.arvancloud.ir/bitnami/kubectl:1.33
   script:
     - kubectl version --client
     - kubectl apply -f k8s/deployment.yaml
