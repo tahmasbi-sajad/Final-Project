@@ -32,13 +32,12 @@ test:
 
 deploy:
   stage: deploy
-  image: docker:24.0.2
+  image: docker.arvancloud.ir/dtzar/helm-kubectl:3.18
   script:
-    - apk add --no-cache curl bash
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - chmod +x kubectl
-    - mv kubectl /usr/local/bin/
-    - kubectl version --client
+    - mkdir -p ~/.kube
+    - chmod 700 ~/.kube
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+    - sed -i "s/latest/$CI_PIPELINE_ID/g" deployment.yaml
     - kubectl apply -f deployment.yaml
   only:
     - dev
