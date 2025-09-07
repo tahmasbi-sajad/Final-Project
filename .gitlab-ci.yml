@@ -10,7 +10,6 @@ build:
   stage: build
   image: docker
   script:
-  privileged: true
     - echo "Login To Docker Hub..."
     - echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - echo "Build Docker image..."
