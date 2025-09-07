@@ -21,8 +21,6 @@ dev:
   stage: dev
   image: docker
   variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_TLS_CERTDIR: ""
   script:
     - echo "Run Container in dev..."
     - docker run --rm $IMAGE_NAME
