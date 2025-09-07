@@ -36,7 +36,7 @@ deploy:
   script:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
-    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+    - echo "$KUBE_CONFIG"  > ~/.kube/config
     - sed -i "s/latest/$CI_PIPELINE_ID/g" deployment.yaml
     - kubectl apply -f deployment.yaml
   only:
