@@ -32,10 +32,11 @@ test:
 
 deploy:
   stage: deploy
-  image: docker.arvancloud.ir/lachlanevenson/k8s-kubectl
+  image: bitnami/kubectl:1.33
   script:
-    - kubectl apply -f deployment.yaml
-    - kubectl rollout status deployment/my-app
+    - kubectl version --client
+    - kubectl apply -f k8s/deployment.yaml
   only:
     - dev
     - tags
+
