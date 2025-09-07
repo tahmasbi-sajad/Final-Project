@@ -33,3 +33,4 @@ test:
   script:
     - echo "RUN ..."
     - python -c "from app import main; main()"
+
