@@ -21,13 +21,13 @@ build:
   rules:
     # Auto build on dev branch
     - if: '$CI_COMMIT_BRANCH == "dev"'
-      when: always
+      when: on_success
     # Manual build on merge request or tag
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG'
-      when: manual
+      when: on_success
     # Auto build on main after merge
     - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
+      when: on_success
 
 test:
   stage: test
@@ -37,13 +37,13 @@ test:
   rules:
     # Auto test on dev branch
     - if: '$CI_COMMIT_BRANCH == "dev"'
-      when: always
+      when: on_success
     # Manual test on merge request or tag
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG'
-      when: manual
+      when: on_success
     # Auto test on main after merge
     - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
+      when: on_success
 
 deploy:
   stage: deploy
@@ -56,7 +56,7 @@ deploy:
   rules:
     # Auto deploy on dev branch
     - if: '$CI_COMMIT_BRANCH == "dev"'
-      when: always
+      when: on_success
     # Manual deploy on merge request, tag, or main
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG || $CI_COMMIT_BRANCH == "main"'
       when: manual
