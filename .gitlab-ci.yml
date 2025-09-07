@@ -5,7 +5,6 @@ stages:
 
 variables:
   IMAGE_NAME: tahmasbi/myrepo
-  KUBE_CONFIG: /root/.kube/config
 build:
   stage: build
   image: docker
@@ -36,7 +35,7 @@ deploy:
   script:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
-    - export KUBECONFIG=/root/.kube/config
+    - echo "$KUBECONFIG" > ~/.kube/config
     - sed -i "s/latest/$CI_PIPELINE_ID/g" deployment.yaml
     - kubectl apply -f deployment.yaml
   only:
