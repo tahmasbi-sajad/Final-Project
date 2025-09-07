@@ -11,7 +11,7 @@ build:
   image: docker
   script:
     - echo "Login To Docker Hub..."
-    - echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+    - echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
     - echo "Build Docker image..."
     - docker build -t $IMAGE_NAME .
     - echo "Send Docker image to Docker Hub..."
