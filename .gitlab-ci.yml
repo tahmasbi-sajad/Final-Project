@@ -32,7 +32,7 @@ test:
 
 deploy:
   stage: deploy
-  image: docker.arvancloud.ir/lachlanevenson/k8s-kubectl:v1.32.0
+  image: docker.arvancloud.ir/lachlanevenson/k8s-kubectl
   script:
     - kubectl apply -f deployment.yaml
     - kubectl rollout status deployment/my-app
