@@ -12,7 +12,6 @@ A simple Python application deployed on Kubernetes with Docker and GitLab CI/CD.
 - [Docker](#docker)
 - [Kubernetes Deployment](#kubernetes-deployment)
 - [CI/CD Pipeline](#cicd-pipeline)
-- [License](#license)
 
 ---
 
