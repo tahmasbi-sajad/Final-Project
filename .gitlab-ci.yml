@@ -52,12 +52,10 @@ deploy:
     - mkdir -p ~/.kube && chmod 700 ~/.kube
     - echo "$KUBE_CONFIG" > ~/.kube/config
     - sed -i "s|:latest|:$CI_COMMIT_SHORT_SHA|g" deployment.yaml
-    - kubectl apply -f deployment.yaml
-    - kubectl apply -f metallb-native.yaml
-    - kubectl apply -f metallb.yaml
     - kubectl apply -f service.yaml
     - kubectl apply -f ingress-controller.yaml
     - kubectl apply -f ingress.yaml
+    - kubectl apply -f deployment.yaml
   rules:
     # Auto deploy on dev branch
     - if: '$CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "dev2"'
