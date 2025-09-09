@@ -167,4 +167,12 @@ python -c "import app; print('App loaded successfully')"
 
 ------------------------------------------------------------------------
 
+### Pipeline Behavior Summary
 
+| Branch / Event           | Build | Test | Deploy |
+|--------------------------|-------|------|--------|
+| Every commit on `dev`    | Auto  | Auto | Auto   |
+| Merge request or Tag     | Auto  | Auto | Manual |
+| Merge to `main`          | Auto  | Auto | Manual |
+
+------------------------------------------------------------------------
