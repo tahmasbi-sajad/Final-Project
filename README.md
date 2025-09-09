@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# Final-Project
-=======
 # Flask App on Kubernetes with GitLab CI/CD
->>>>>>> dev2
 
 This project demonstrates deploying a simple **Flask application** on a
 Kubernetes cluster using **Docker**, **Helm/Kubectl**, **Ingress**, and
