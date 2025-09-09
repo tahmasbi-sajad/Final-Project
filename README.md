@@ -168,10 +168,4 @@ python -c "import app; print('App loaded successfully')"
 
 ------------------------------------------------------------------------
 
-## 📖 Summary
-
-This project shows: - How to containerize a Flask app with Docker. - How
-to deploy it to Kubernetes using Deployment, Service, Ingress. - How to
-configure MetalLB for LoadBalancer IPs. - How to set up GitLab CI/CD for
-automated build, test, and deploy.
 
