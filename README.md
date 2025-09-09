@@ -66,7 +66,6 @@ Builds a lightweight Docker image running the Flask application.
     8000.
 -   **Ingress:** Routes external traffic through NGINX ingress
     controller.
--   **MetalLB:** Provides LoadBalancer IPs in bare-metal environments.
 
 Example Service:
 
