@@ -135,14 +135,25 @@ spec:
 
 ## 🌍 Accessing the Application
 
--   The app is accessible via the **Ingress resource** at:
+The app is accessible via the **Ingress resource** at:
 
-```{=html}
-<!-- -->
-```
-    http://final-project.com
+http://final-project.com
 
 (Ensure your DNS or `/etc/hosts` file points to the MetalLB IP).
+
+### 🖥️ Windows Hosts File Configuration
+
+If you are using Windows, add the following entry to your `hosts` file:
+
+<MetalLB-IP> final-project.com
+
+
+👉 The `hosts` file is located at:
+
+C:\Windows\System32\drivers\etc\hosts
+
+
+Replace `<MetalLB-IP>` with one of the IP addresses from your **MetalLB pool** (e.g., `192.168.6.240`).
 
 ------------------------------------------------------------------------
 
