@@ -54,6 +54,7 @@ deploy:
     - sed -i "s|:latest|:$CI_COMMIT_SHORT_SHA|g" deployment.yaml
     - kubectl apply -f service.yaml
     - kubectl apply -f ingress-controller.yaml
+    - kubectl wait --for=condition=Available deployment/ingress-nginx-controller -n ingress-nginx --timeout=180s
     - kubectl apply -f ingress.yaml
     - kubectl apply -f deployment.yaml
   rules:
