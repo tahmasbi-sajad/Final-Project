@@ -1,119 +1,166 @@
-# Project1
+# Flask App on Kubernetes with GitLab CI/CD
 
-A simple Python application deployed on Kubernetes with Docker and GitLab CI/CD.
+This project demonstrates deploying a simple **Flask application** on a
+Kubernetes cluster using **Docker**, **Helm/Kubectl**, **Ingress**, and
+**GitLab CI/CD**.
 
----
+------------------------------------------------------------------------
 
-## Table of Contents
+## 📂 Project Structure
 
-- [Project Structure](#project-structure)
-- [Requirements](#requirements)
-- [Local Run](#local-run)
-- [Docker](#docker)
-- [Kubernetes Deployment](#kubernetes-deployment)
-- [GitLab CI/CD Pipeline](#gitlab-cicd-pipeline)
+    .
+    ├── app.py                # Simple Flask application
+    ├── Dockerfile            # Docker image build instructions
+    ├── requirements.txt      # Python dependencies
+    ├── deployment.yaml       # Kubernetes Deployment
+    ├── service.yaml          # Kubernetes Service
+    ├── ingress.yaml          # Kubernetes Ingress
+    ├── .gitlab-ci.yml        # GitLab CI/CD pipeline
+    ├── test-ci.yml           # Test stage configuration
 
----
+------------------------------------------------------------------------
 
-## Project Structure
+## 🚀 Application
 
-```
-project1/
-├─ app.py
-├─ Dockerfile
-├─ deployment.yaml
-├─ .gitlab-ci.yml
-├─ test-ci.yml
-├─ README.md
-```
+**Flask App (app.py):**
 
-- `app.py` → Main Python application.
-- `Dockerfile` → Docker image configuration.
-- `deployment.yaml` → Kubernetes Deployment manifest.
-- `.gitlab-ci.yml` → GitLab CI/CD pipeline configuration.
-- `test-ci.yml` → Child pipeline for running tests.
+``` python
+from flask import Flask
 
----
+app = Flask(__name__)
 
-## Requirements
+@app.route("/")
+def home():
+    return "Hello! This program is running in Kubernetes."
 
-- Python 3.12+
-- Docker
-- Kubernetes cluster access (Kubeconfig)
-- GitLab Runner for CI/CD
-
----
-
-## Local Run
-
-Run the Python application locally:
-
-```bash
-python app.py
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
 ```
 
-Expected output:
+------------------------------------------------------------------------
 
+## 🐳 Docker
+
+**Dockerfile:**
+
+``` dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY app.py .
+
+RUN pip install flask
+
+CMD ["python", "app.py"]
 ```
-Hello! This program was run in Kubernetes.
+
+Builds a lightweight Docker image running the Flask application.
+
+------------------------------------------------------------------------
+
+## ☸️ Kubernetes Manifests
+
+-   **Deployment:** Runs 2 replicas of the app.
+-   **Service:** Exposes the app internally on port 80 → container port
+    8000.
+-   **Ingress:** Routes external traffic through NGINX ingress
+    controller.
+-   **MetalLB:** Provides LoadBalancer IPs in bare-metal environments.
+
+Example Service:
+
+``` yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-svc
+  namespace: dev
+spec:
+  ports:
+    - port: 80
+      targetPort: 8000
+  selector:
+    app: my-app
 ```
+
+------------------------------------------------------------------------
+
+## ⚙️ GitLab CI/CD Pipeline
+
+**Stages:** 1. **Build** → Build and push Docker image to Docker Hub. 2.
+**Test** → Install dependencies and verify app loads successfully. 3.
+**Deploy** → Deploy to Kubernetes using `kubectl` and `helm`.
+
+Pipeline defined in `.gitlab-ci.yml`.
+
+------------------------------------------------------------------------
+
+## 📦 Prerequisites Installed Beforehand
+
+The following components were installed on the Kubernetes cluster before
+deploying this project:
+
+``` bash
+kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
+
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.1/deploy/static/provider/aws/deploy.yaml
+```
+
+And applied **MetalLB configuration** (`metallb.yaml`):
+
+``` yaml
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: first-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.6.240-192.168.6.250
 
 ---
 
-## Docker
-
-Build and run the application using Docker:
-
-```bash
-docker build -t project1:latest .
-docker run --rm project1:latest
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: first-pool-advertise
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - first-pool
 ```
 
-This builds the Docker image and runs it locally.
+------------------------------------------------------------------------
 
----
+## 🌍 Accessing the Application
 
-## Kubernetes Deployment
+-   The app is accessible via the **Ingress resource** at:
 
-Deploy the application using the `deployment.yaml` file:
+```{=html}
+<!-- -->
+```
+    http://final-project.com
 
-```bash
-kubectl apply -f deployment.yaml
-kubectl get pods -n dev
+(Ensure your DNS or `/etc/hosts` file points to the MetalLB IP).
+
+------------------------------------------------------------------------
+
+## ✅ Testing
+
+GitLab CI runs a simple test stage:
+
+``` bash
+pip install -r requirements.txt
+python -c "import app; print('App loaded successfully')"
 ```
 
-- This deployment creates 2 replicas in the `dev` namespace.
-- The container image is configured in the deployment (`tahmasbi/myrepo:latest` by default).
+------------------------------------------------------------------------
 
----
+## 📖 Summary
 
-## GitLab CI/CD Pipeline
-
-Pipeline stages:
-
-1. **Build**
-   - Builds Docker images with two tags: commit SHA (`$CI_COMMIT_SHORT_SHA`) and `latest`.
-   - Pushes the images to Docker Hub.
-   - Runs automatically on `dev` and `main`, manual on merge requests or tags.
-
-2. **Test**
-   - Runs the child pipeline defined in `test-ci.yml`.
-   - Executes Python tests: `from app import main; main()`.
-   - Automatic on `dev` and `main`, manual on merge requests or tags.
-
-3. **Deploy**
-   - Deploys the application to Kubernetes.
-   - Automatic on `dev` branch.
-   - Manual on `main`, merge requests, or tags.
-
-### Pipeline Behavior Summary
-
-| Branch / Event           | Build | Test | Deploy |
-|--------------------------|-------|------|--------|
-| Every commit on `dev`    | Auto  | Auto | Auto   |
-| Merge request or Tag     | Auto  | Auto | Manual |
-| Merge to `main`          | Auto  | Auto | Manual |
-
----
-
+This project shows: - How to containerize a Flask app with Docker. - How
+to deploy it to Kubernetes using Deployment, Service, Ingress. - How to
+configure MetalLB for LoadBalancer IPs. - How to set up GitLab CI/CD for
+automated build, test, and deploy.
 
