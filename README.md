@@ -1,4 +1,4 @@
-# Project1
+# Final-Project
 
 A simple Python application deployed on Kubernetes with Docker and GitLab CI/CD.
 
@@ -105,16 +105,6 @@ Pipeline stages:
    - Deploys the application to Kubernetes.
    - Automatic on `dev` branch.
    - Manual on `main`, merge requests, or tags.
-
-### Pipeline Behavior Summary
-
-| Branch / Event           | Build | Test | Deploy |
-|--------------------------|-------|------|--------|
-| Every commit on `dev`    | Auto  | Auto | Auto   |
-| Merge request or Tag     | Auto  | Auto | Manual |
-| Merge to `main`          | Auto  | Auto | Manual |
-
----
 
 ### Pipeline Behavior Summary
 
