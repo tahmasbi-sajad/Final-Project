@@ -116,4 +116,12 @@ Pipeline stages:
 
 ---
 
+### Pipeline Behavior Summary
 
+| Branch / Event           | Build | Test | Deploy |
+|--------------------------|-------|------|--------|
+| Every commit on `dev`    | Auto  | Auto | Auto   |
+| Merge request or Tag     | Auto  | Auto | Manual |
+| Merge to `main`          | Auto  | Auto | Manual |
+
+---
